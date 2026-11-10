@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AR.js - Suivi d'image NFT</title>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-gif-shader@0.2.0/dist/aframe-gif-shader.min.js"></script>
 
     <!-- A-Frame 1.3.0 (compatible AR.js 3.4.5) -->
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
@@ -53,9 +54,13 @@
 
         <!-- NFT Marker : URL ABSOLUE vers tes descripteurs a.fset / a.fset3 / a.iset (SANS extension) -->
         
-        <a-nft type="nft" url="https://voidhtml.github.io/ARedMarker/assets/a" videohandler smooth="true" smoothCount="10" smoothTolerance=".01" smoothThreshold="5">
-            <!-- Vidéo à la place du modèle 3D -->
-            <a-video src="#vid" width="300" height="175" position="50 0 -50" rotation="-90 0 0"></a-video>
+        <a-nft type="nft" url="https://voidhtml.github.io/ARedMarker/assets/a" smooth="true" smoothCount="10" smoothTolerance=".01" smoothThreshold="5">
+    <a-entity
+        geometry="primitive: plane; width: 300; height: 175"
+        material="shader: gif; src: url(assets/anim.gif)"
+        position="50 0 -50"
+        rotation="-90 0 0">
+    </a-entity>
         </a-nft>
 
         <!-- Caméra -->
