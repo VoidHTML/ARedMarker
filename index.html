@@ -1,59 +1,82 @@
-<!-- import aframe and then ar.js with image tracking / location based features -->
-<script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
-<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR.js - Suivi d'image NFT</title>
 
-<script>
-  AFRAME.registerComponent('videohandler', {
-    init: function () {
-      var marker = this.el;
-      this.vid = document.querySelector("#vid");
+    <!-- A-Frame 1.3.0 (compatible AR.js 3.4.5) -->
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.5/aframe/build/aframe-ar-nft.js"></script>
 
-      marker.addEventListener('markerFound', function () {
-        this.vid.play();
-      }.bind(this));
+    <!-- Composant déclaré AVANT la scène : lance / met en pause la vidéo -->
+    <script>
+        AFRAME.registerComponent('videohandler', {
+            init: function () {
+                var marker = this.el;
+                this.vid = document.querySelector("#vid");
 
-      marker.addEventListener('markerLost', function () {
-        this.vid.pause();
-      }.bind(this));
-    },
-  });
-</script>
+                marker.addEventListener('markerFound', function () {
+                    this.vid.play();
+                }.bind(this));
 
-<body style="margin : 0px; overflow: hidden;">
+                marker.addEventListener('markerLost', function () {
+                    this.vid.pause();
+                }.bind(this));
+            }
+        });
+    </script>
 
-  <!-- a-frame scene -->
-  <a-scene
-    vr-mode-ui="enabled: false;"
-    renderer="logarithmicDepthBuffer: true;"
-    embedded
-    arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;"
-  >
-    <a-assets>
-      <video id="vid" src="assets/asset.mp4" preload="auto" loop crossorigin
-        webkit-playsinline muted playsinline></video>
-    </a-assets>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        .message {
+            position: absolute;
+            bottom: 10%;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 1em;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <div class="message">Pointez la caméra vers la fresque</div>
 
-    <!-- a-nft is the anchor that defines an Image Tracking entity -->
-    <a-nft
-      type="nft"
-      url="assets/a"
-      videohandler
-      smooth="true"
-      smoothCount="10"
-      smoothTolerance=".01"
-      smoothThreshold="5"
-    >
-      <!-- la vidéo remplace l'objet 3D (comme proposé à la fin du TD) -->
-      <a-video
-        src="#vid"
-        width="300"
-        height="175"
-        position="50 150 0"
-        rotation="-90 0 0"
-      ></a-video>
-    </a-nft>
+    <a-scene vr-mode-ui="enabled: false;" renderer="logarithmicDepthBuffer: true;" embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
+        <a-assets>
+            <video id="vid" src="assets/asset.mp4" preload="auto" loop crossorigin webkit-playsinline muted playsinline></video>
+        </a-assets>
 
-    <!-- static camera that moves according to the device movements -->
-    <a-entity camera></a-entity>
-  </a-scene>
+        <!-- NFT Marker : URL ABSOLUE vers tes descripteurs a.fset / a.fset3 / a.iset (SANS extension) -->
+        <!-- remplace TON-PSEUDO et TON-DEPOT par ceux de ton GitHub Pages -->
+        <a-nft type="nft" url="https://TON-PSEUDO.github.io/TON-DEPOT/assets/a" videohandler smooth="true" smoothCount="10" smoothTolerance=".01" smoothThreshold="5">
+            <!-- Vidéo à la place du modèle 3D -->
+            <a-video src="#vid" width="300" height="175" position="50 0 -50" rotation="-90 0 0"></a-video>
+        </a-nft>
+
+        <!-- Caméra -->
+        <a-entity camera></a-entity>
+    </a-scene>
+
+    <script>
+        // --- Messages du marker ---
+        const message = document.querySelector('.message');
+        const nftMarker = document.querySelector('a-nft');
+
+        nftMarker.addEventListener('markerFound', () => {
+            message.style.display = 'none';
+        });
+        nftMarker.addEventListener('markerLost', () => {
+            message.style.display = 'block';
+        });
+    </script>
+
+    <!-- Console de debug mobile : à SUPPRIMER une fois que tout marche -->
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>eruda.init();</script>
 </body>
+</html>
