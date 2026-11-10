@@ -46,7 +46,7 @@
 <body>
     <div class="message">Pointez la caméra vers la fresque</div>
 
-    <a-scene vr-mode-ui="enabled: false;" renderer="logarithmicDepthBuffer: true;" embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
+    <a-scene vr-mode-ui="enabled: false;" renderer="logarithmicDepthBuffer: true;" embedded arjs="trackingMethod: best; sourceType: webcam; sourceWidth: 1280; sourceHeight: 960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;">
         <a-assets>
             <video id="vid" src="assets/asset.mp4" preload="auto" loop crossorigin webkit-playsinline muted playsinline></video>
         </a-assets>
